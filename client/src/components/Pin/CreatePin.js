@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import axios from 'axios';
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -8,11 +9,64 @@ import LandscapeIcon from "@material-ui/icons/LandscapeOutlined";
 import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/SaveTwoTone";
 
+import Context from '../../context';
+import { CREATE_PIN_MUTATION} from '../../graphql/mutations';
+import { useClient} from '../../client'
+
+
 const CreatePin = ({ classes }) => {
-  
+  const client = useClient()
+  const {state, dispatch} = useContext(Context)
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
-  const [content, setContent] = useState("")
+  const [content, setContent] = useState("");
+  const [submitting, setSubmitting] = useState(false)
+
+
+  const handleDeleteDraft = () => {
+      setTitle("")
+      setImage("")
+      setContent("")
+      dispatch({type: "DELETE_DRAFT"})
+  }
+
+
+  const handleSubmit = async event => {
+
+    try {
+
+      event.preventDefault();
+
+      setSubmitting(true)
+
+      const url = await handleImageUpload();
+      const {latitude, longitude} = state.draft
+      const variables= { title, image: url, content, longitude, latitude }
+      const { createPin} = await client.request(CREATE_PIN_MUTATION, variables)
+      console.log("Pin created", { createPin })
+      handleDeleteDraft()
+      
+    } catch (err) {
+
+      setSubmitting(false)
+      console.error("Error creating pin", err)
+      
+
+    }
+
+  }
+
+  const handleImageUpload = async () => {
+      const data = new FormData() 
+      data.append("file", image)
+      data.append("upload_preset", "GeoPinsReal")
+      data.append("cloud_name", "dcsc8rmsv")
+      const res = await axios.post("https://api.cloudinary.com/v1_1/dcsc8rmsv/image/upload", 
+      data 
+      )
+
+      return res.data.url
+  }
 
 
   return (
@@ -44,6 +98,7 @@ const CreatePin = ({ classes }) => {
             />
             <label htmlFor='image'>
               <Button 
+                style={{ color: image && "green"}}
                 component='span'
                 size='small'
                 className={classes.button}
@@ -70,6 +125,7 @@ const CreatePin = ({ classes }) => {
       </div>
       <div>
         <Button
+          onClick={handleDeleteDraft}
           className={classes.button}
           variant="contained"
           color="primary"
@@ -84,7 +140,7 @@ const CreatePin = ({ classes }) => {
           variant="contained"
           color="secondary"
           onClick={handleSubmit}
-          disabled={!title.trim() || !content.trim() || !image}
+          disabled={!title.trim() || !content.trim() || !image || submitting}
           >
             Submit
            <SaveIcon className={classes.rightIcon} />
