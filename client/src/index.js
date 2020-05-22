@@ -11,6 +11,8 @@ import ProtectedRoute from './ProtectedRoute'
 import "mapbox-gl/dist/mapbox-gl.css";
 import * as serviceWorker from "./serviceWorker";
 
+
+
 const Root = () => {
 
   const initialState = useContext(Context)
