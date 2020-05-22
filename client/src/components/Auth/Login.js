@@ -89,7 +89,7 @@ const styles = theme => ({
   },
 
    logo: {
-    marginBottom: "100px",
+    marginBottom: "110px",
     alignItems: "center",
     justifyContent: "center",
     display: "flex",
