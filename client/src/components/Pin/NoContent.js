@@ -12,7 +12,7 @@ const NoContent = ({ classes }) => (
         component="h2"
         variant="h6"
         align="center"
-        color="textPrimary"
+        color="textSecondary"
         gutterBottom
       >
       Click on the map to add a pin
@@ -30,7 +30,8 @@ const styles = theme => ({
   },
   icon: {
     margin: theme.spacing.unit,
-    fontSize: "80px"
+    fontSize: "80px",
+    color:"#767676"
   }
 });
 

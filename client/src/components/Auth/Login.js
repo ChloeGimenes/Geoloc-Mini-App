@@ -3,16 +3,19 @@ import { GraphQLClient } from 'graphql-request';
 import { GoogleLogin } from 'react-google-login';
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import {unstable_useMediaQuery as useMediaQuery} from '@material-ui/core/useMediaQuery';
 
 import Context from '../../context';
 import { ME_QUERY} from '../../graphql/queries';
 import {BASE_URL} from '../../client';
+import MapIcon from "@material-ui/icons/Map";
 
 
 
 const Login = ({ classes }) => {
 
- 
+  const mobileSize = useMediaQuery('(max-width: 650px)')
+
 
   const {dispatch} = useContext(Context)
 
@@ -45,21 +48,28 @@ const onFailure = err => {
   console.error("Error logging in", err);
   dispatch({type: "IS_LOGGED_IN", payload: false});
 }
+
+const inStyle = { background: "black"};
+
   return(
 
     <div className={classes.root}>
-      <Typography
-        component="h1"
-        variant="h3"
-        gutterBottom
-        noWrap
-        style={{color: "rgb(66,133,244)"}}>
-
-        Welcome
-      </Typography>
+      <div className={classes.logo}>
+       <MapIcon className={classes.icon} />
+            <Typography 
+            className={mobileSize ? classes.mobile : ""}
+            component="h1"
+            variant="h2"
+            color="inherit"
+            noWrap
+            >
+              GeoPins
+            </Typography >
+        </div>
       <GoogleLogin 
+        style={inStyle}
           buttonText="Login with Google"
-          theme="dark"
+          // theme="dark"
           isSignedIn={true}
           onFailure={onFailure}
           onSuccess={onSuccess}
@@ -68,14 +78,29 @@ const onFailure = err => {
   )
 };
 
-const styles = {
+const styles = theme => ({
   root: {
     height: "100vh",
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    
+  },
+
+   logo: {
+    marginBottom: "100px",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+
+  },
+
+  icon: {
+    marginRight: theme.spacing.unit,
+    color: "black",
+    fontSize: 80
   }
-};
+});
 
 export default withStyles(styles)(Login);
