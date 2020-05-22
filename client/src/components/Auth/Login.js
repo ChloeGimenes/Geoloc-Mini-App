@@ -10,7 +10,6 @@ import {BASE_URL} from '../../client';
 
 
 
-
 const Login = ({ classes }) => {
 
  
@@ -30,10 +29,11 @@ const Login = ({ classes }) => {
           authorization: idToken
         }
       })
-      const data = await client.request(ME_QUERY)
+      const { me } = await client.request(ME_QUERY);
+      console.log({me})
     
-      dispatch({type: "LOGIN_USER", payload: data.me})
-      dispatch({type: "IS_LOGGED_IN", payload: googleUser.isSignedIn()})
+      dispatch({type: "LOGIN_USER", payload: me});
+      dispatch({type: "IS_LOGGED_IN", payload: googleUser.isSignedIn()});
       
     } catch(err) {
           onFailure(err)
@@ -42,7 +42,8 @@ const Login = ({ classes }) => {
   };
 
 const onFailure = err => {
-  console.error("Error logging in", err)
+  console.error("Error logging in", err);
+  dispatch({type: "IS_LOGGED_IN", payload: false});
 }
   return(
 

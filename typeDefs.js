@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require("apollo-server");
 
 
 module.exports = gql`
@@ -43,7 +43,9 @@ type Query {
 }
 
 type Mutation {
-    createPin(input: createPinInput!): Pin
+    createPin(input: CreatePinInput!): Pin
+    deletePin(pinId: ID!) : Pin
+    createComment(pinId: ID!, text: String!): Pin
 }
 
 `;

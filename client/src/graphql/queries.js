@@ -14,7 +14,7 @@ export const GET_PINS_QUERY = `
 {
   getPins {
     _id
-    createAt
+    createdAt
     title
     image
     content
@@ -37,4 +37,4 @@ export const GET_PINS_QUERY = `
     }
   }
 }
-`
+`;

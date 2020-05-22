@@ -28,7 +28,7 @@ const CreatePin = ({ classes }) => {
       setImage("")
       setContent("")
       dispatch({type: "DELETE_DRAFT"})
-  }
+  };
 
 
   const handleSubmit = async event => {
@@ -37,13 +37,15 @@ const CreatePin = ({ classes }) => {
 
       event.preventDefault();
 
-      setSubmitting(true)
+      setSubmitting(true);
 
       const url = await handleImageUpload();
       const {latitude, longitude} = state.draft
-      const variables= { title, image: url, content, longitude, latitude }
-      const { createPin} = await client.request(CREATE_PIN_MUTATION, variables)
-      console.log("Pin created", { createPin })
+      const variables= { title, image: url, content, latitude, longitude}
+      const { createPin} = await client.request(CREATE_PIN_MUTATION, variables);
+      
+      console.log("Pin created", { createPin });
+      dispatch({ type: "CREATE_PIN", payload: createPin})
       handleDeleteDraft()
       
     } catch (err) {
@@ -57,13 +59,13 @@ const CreatePin = ({ classes }) => {
   }
 
   const handleImageUpload = async () => {
-      const data = new FormData() 
-      data.append("file", image)
-      data.append("upload_preset", "GeoPinsReal")
-      data.append("cloud_name", "dcsc8rmsv")
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "GeoPinsReal");
+      data.append("cloud_name", "dcsc8rmsv");
       const res = await axios.post("https://api.cloudinary.com/v1_1/dcsc8rmsv/image/upload", 
       data 
-      )
+      );
 
       return res.data.url
   }
