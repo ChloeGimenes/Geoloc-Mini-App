@@ -21,37 +21,39 @@ const Header = ({ classes }) => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <div className={classes.grow}>
-            <MapIcon className={classes.icon} />
-            <Typography 
-            className={mobileSize ? classes.mobile : ""}
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            >
-              GeoPins
-            </Typography >
-          </div>
-         {currentUser && (
+        {currentUser && (
            <div className={classes.grow}>
              <img
               className={classes.picture}
               src={currentUser.picture}
               alt={currentUser.name}
             />
-            <Typography
+            {/* <Typography
                 className={mobileSize ? classes.mobile : ""}
-                variant="h5"
+                variant="h6"
                 color="inherit"
                 noWrap>
 
               {currentUser.name}
-            </Typography>
+            </Typography> */}
            </div>
          )}
+         
+          <div className={classes.grow}>
+            <MapIcon className={classes.icon} />
+            <Typography 
+            className={mobileSize ? classes.mobile : ""}
+            component="h1"
+            variant="h4"
+            color="inherit"
+            noWrap
+            >
+              GeoPins
+            </Typography >
+          </div>
+        
 
-         <Signout />
+         <Signout className={classes.signout}/>
          
         </Toolbar>
       </AppBar>
@@ -77,9 +79,12 @@ const styles = theme => ({
     display: "none"
   },
   picture: {
-    height: "50px",
+    height: "40px",
     borderRadius: "90%",
     marginRight: theme.spacing.unit * 2
+  },
+  signout : {
+    fontsize : 30
   }
 });
 

@@ -96,6 +96,10 @@ const styles = theme => ({
 
   },
 
+  mobile: {
+    display: "none"
+  },
+
   icon: {
     marginRight: theme.spacing.unit,
     color: "black",
