@@ -73,7 +73,7 @@ const inStyle = { background: "black"};
           isSignedIn={true}
           onFailure={onFailure}
           onSuccess={onSuccess}
-          clientId="605630111687-nc0fa73opn552a139bfif2p0nmoadimj.apps.googleusercontent.com" />
+          clientId= {process.env.REACT_APP_OAUTH_CLIENT_ID}/>
     </div>
   )
 };
